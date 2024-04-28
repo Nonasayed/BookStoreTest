@@ -23,7 +23,7 @@ jobs:
         uses: github/codeql-action/init@v1
         with:
           languages: ${{ matrix.language }}
-          queries: .github/workflows/queries/
+          queries: .github/workflows/
 
       - name: Analyze
         uses: github/codeql-action/analyze@v1
