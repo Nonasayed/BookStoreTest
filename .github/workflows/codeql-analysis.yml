@@ -1,0 +1,37 @@
+name: ASP.NET CodeQL Analysis
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        language: [csharp]  # Language used in ASP.NET projects
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          languages: ${{ matrix.language }}
+          queries: .github/workflows/queries/
+
+      - name: Analyze
+        uses: github/codeql-action/analyze@v1
+        with:
+          database-path: ./codeql-database
+          queries: ./**/*
+
+      - name: Upload SARIF results
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: codeql-database/codeql-sarif.sarif
